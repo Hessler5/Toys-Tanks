@@ -1,4 +1,6 @@
 import pygame
+from tank import Tank
+from game import Game
 
 pygame.init()
 
@@ -8,24 +10,23 @@ SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Toy Tanks")
 FPS = 60
 
-#drawing function
-def draw_window():
-    SCREEN.fill((80, 80, 80))
-    pygame.display.update()
+#import main player sprite
+RED_TANK = pygame.image.load("Red_Tank_Sprite.png")
+PLAYER = Tank(RED_TANK, 50, 50)
+
+#Create main game
+game = Game(SCREEN, PLAYER)
 
 def main():
     clock = pygame.time.Clock()
 
-    run = True
-
-    while run:
+    while game.run:
         clock.tick(FPS)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
 
-
-        draw_window()
+        game.draw_window(PLAYER)
+        game.handle_events()
+ 
+        
 
 
     pygame.quit()
