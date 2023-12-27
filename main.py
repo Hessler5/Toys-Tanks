@@ -12,7 +12,7 @@ pygame.display.set_caption("Toy Tanks")
 FPS = 60
 
 #import main player sprite
-RED_TANK = pygame.image.load("Red_Tank_Sprite.png")
+RED_TANK = pygame.image.load("Red_Tank_Sprite.png").convert_alpha()
 PLAYER = Tank(RED_TANK, 50, 50)
 
 
@@ -25,11 +25,12 @@ world_data = json.load(level_file)
 
 def main():
     clock = pygame.time.Clock()
+    game.createBarriers(world_data)
 
     while game.run:
         clock.tick(FPS)
 
-        game.draw_window(PLAYER, world_data)
+        game.draw_window(PLAYER)
         game.handle_events()
  
         

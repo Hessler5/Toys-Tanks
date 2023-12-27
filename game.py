@@ -13,9 +13,9 @@ class Game:
     def handle_events(self):
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_a]:
-            self.player.rotate_tank(3)
+            self.player.rotate_tank(5, self.barrier_group)
         if pressed[pygame.K_d]:
-            self.player.rotate_tank(-3)
+            self.player.rotate_tank(-5, self.barrier_group)
         if pressed[pygame.K_w]:
             self.player.move_tank(-3, self.barrier_group)
         if pressed[pygame.K_s]:
@@ -33,21 +33,23 @@ class Game:
         for missel in self.player.projectiles:
             missel.move_missel()
 
-    #drawing function
-    def draw_window(self, player, world_data):
-        self.screen.fill((220, 220, 220))
-
-
-        #reads level data
+    #creates initial barrier group to avoid a memory leak
+    def createBarriers(self, world_data):
         for row in range(len(world_data)):
             for column in range(len(world_data[row])):
                 if world_data[row][column] == 1:
-                    new_barrier = Barrier()
+                    new_barrier = Barrier(column * 100, row * 100)
                     self.screen.blit(new_barrier.image, (column * 100, row * 100))
-                    new_barrier.rect.x = column * 100
-                    new_barrier.rect.y = row * 100
                     self.barrier_group.add(new_barrier)
 
+    #drawing function
+    def draw_window(self, player):
+        self.screen.fill((220, 220, 220))
+    
+        #draws barriers on screen
+        for barrier in self.barrier_group: 
+            self.screen.blit(barrier.image, (barrier.x, barrier.y))
+                  
         self.screen.blit(player.image, player.rect)
         for projectile in self.player.projectiles:
             self.screen.blit(projectile.source_surface, (projectile.x, projectile.y ))
