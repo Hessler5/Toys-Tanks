@@ -1,6 +1,7 @@
 import pygame, sys
 import json
 from game import Game
+from text import Text
 
 pygame.init()
 
@@ -14,15 +15,8 @@ FPS = 60
 RED_TANK = pygame.image.load("Red_Tank_Sprite.png").convert_alpha()
 BLUE_TANK = pygame.image.load("Blue_Tank_Sprite.png").convert_alpha()
 
-TEXT_FONT = pygame.font.SysFont("Arial", 30)
-TITLE_FONT = pygame.font.SysFont("Arial", 120)
-
-
-def draw_text(text, font, text_col, button):
-    text_img = font.render(text, True, text_col)
-    SCREEN.blit(text_img, (button.center[0] - text_img.get_width()//2, button.center[1] - text_img.get_height()//2))
-
 def main():
+    text = Text(SCREEN)
     START_SCREEN = True
     TOTAL_LEVELS = 2
 
@@ -37,8 +31,8 @@ def main():
         TITLE = pygame.Rect(SCREEN.get_width()//2 - 300, 100, 600, 200)
         START_BUTTON = pygame.Rect(SCREEN.get_width()//2 - 150, SCREEN.get_height()//2 - 50, 300, 100)
         pygame.draw.rect(SCREEN, (114,114,114), START_BUTTON)
-        draw_text("Toy Tanks", TITLE_FONT, (0,0,0), TITLE)
-        draw_text("START", TEXT_FONT, (0,0,0), START_BUTTON)
+        text.draw_text_title("Toy Tanks", (0,0,0), TITLE)
+        text.draw_text("START", (0,0,0), START_BUTTON)
         pygame.display.update()
         if START_BUTTON.collidepoint(pos):
             if pygame.mouse.get_pressed()[0]:
@@ -52,14 +46,15 @@ def main():
     running = True
     while running == True:
         for level in range(1, TOTAL_LEVELS + 1):    
+            Game.respawn = True
 
             #loads world data
             level_file = open(f'level{level}_data.json', 'r')
             world_data = json.load(level_file)
 
-            #Create main gamed
+            #Create main gameda
             game = Game(SCREEN)
-            game.create_map(world_data, RED_TANK, BLUE_TANK)
+            game.create_map(world_data, BLUE_TANK)
             
             while game.run:
                 clock.tick(FPS)
@@ -68,8 +63,33 @@ def main():
                     pygame.quit()
                     sys.exit()
 
-                game.draw_window()
+                game.spawn_player(RED_TANK)
                 game.handle_events()
+                game.draw_window()
+
+            #death screen
+                if Game.lives == 0:
+                    running = False
+                    death_screen = True
+                    while death_screen  == True:
+                        pos = pygame.mouse.get_pos()
+                        SCREEN.fill((220, 220, 220))
+                        TITLE = pygame.Rect(SCREEN.get_width()//2 - 300, 100, 600, 200)
+                        RESTART_BUTTON = pygame.Rect(SCREEN.get_width()//2 - 150, SCREEN.get_height()//2 + 100, 300, 100)
+                        pygame.draw.rect(SCREEN, (114,114,114), RESTART_BUTTON)
+                        text.draw_text_title("DEAD", (0,0,0), TITLE)
+                        text.draw_text("RESTART", (0,0,0), RESTART_BUTTON)
+                        pygame.display.update()
+                        if RESTART_BUTTON.collidepoint(pos):
+                            if pygame.mouse.get_pressed()[0]:
+                                Game.lives = 3
+                                death_screen = False
+                                Game.enemy_count = 0
+                                return "Done"
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                sys.exit()
 
         #end screen
             if level == TOTAL_LEVELS:
@@ -80,9 +100,9 @@ def main():
                     SCREEN.fill((220, 220, 220))
                     TITLE = pygame.Rect(SCREEN.get_width()//2 - 300, 100, 600, 200)
                     RESTART_BUTTON = pygame.Rect(SCREEN.get_width()//2 - 150, SCREEN.get_height()//2 - 50, 300, 100)
-                    pygame.draw.rect(SCREEN, (114,114,114), START_BUTTON)
-                    draw_text("Winner!", TITLE_FONT, (0,0,0), TITLE)
-                    draw_text("RESTART", TEXT_FONT, (0,0,0), START_BUTTON)
+                    pygame.draw.rect(SCREEN, (114,114,114), RESTART_BUTTON)
+                    text.draw_text_title("WINNER!", (0,0,0), TITLE)
+                    text.draw_text("RESTART", (0,0,0), RESTART_BUTTON)
                     pygame.display.update()
                     if RESTART_BUTTON.collidepoint(pos):
                         if pygame.mouse.get_pressed()[0]:
@@ -97,5 +117,8 @@ def main():
     pygame.quit()
     sys.exit()
 
+def run_game():
+    while True:
+        main()
 
-main()
+run_game()
