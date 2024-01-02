@@ -12,8 +12,8 @@ pygame.display.set_caption("Toy Tanks")
 FPS = 60
 
 #import tank images
-RED_TANK = pygame.image.load("Red_Tank_Sprite.png").convert_alpha()
-BLUE_TANK = pygame.image.load("Blue_Tank_Sprite.png").convert_alpha()
+RED_TANK = pygame.image.load("assets/Red_Tank_Sprite.png").convert_alpha()
+BLUE_TANK = pygame.image.load("assets/Blue_Tank_Sprite.png").convert_alpha()
 
 def main():
     text = Text(SCREEN)
@@ -49,7 +49,7 @@ def main():
             Game.respawn = True
 
             #loads world data
-            level_file = open(f'level{level}_data.json', 'r')
+            level_file = open(f'levels/level{level}_data.json', 'r')
             world_data = json.load(level_file)
 
             #Create main gameda
@@ -117,6 +117,7 @@ def main():
     pygame.quit()
     sys.exit()
 
+#main function placed in a loop to facilitate restarting 
 def run_game():
     while True:
         main()

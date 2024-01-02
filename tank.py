@@ -10,8 +10,8 @@ class Tank(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(img, (40, 70))
         self.x = x
         self.y = y
-        self.source_rect = self.source_img.get_rect(center=(500, 500))
-        self.rect = self.image.get_rect(center=(500, 500))
+        self.source_rect = self.source_img.get_rect(x = self.x, y = self.y)
+        self.rect = self.image.get_rect(x = self.x, y = self.y)
         self.rotation = 0
         self.missel_group = pygame.sprite.Group()
 
@@ -21,7 +21,6 @@ class Tank(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center = self.source_rect.center)
         self.mask = pygame.mask.from_surface(self.image)
         if pygame.sprite.spritecollide(self, barrier_group, False, pygame.sprite.collide_mask):
-            print("yes")
             self.rotation -= rotation_value * 2
             self.image = pygame.transform.rotate(self.source_img, self.rotation)
             self.rect = self.image.get_rect(center = self.source_rect.center)    

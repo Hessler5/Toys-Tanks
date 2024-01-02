@@ -5,7 +5,7 @@ class Missel(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.x = x
         self.y = y
-        self.image = pygame.transform.scale(pygame.image.load("projectile.png").convert_alpha(), (18,18))
+        self.image = pygame.transform.scale(pygame.image.load("assets/projectile.png").convert_alpha(), (18,18))
         self.rect = self.image.get_rect(center=(x, y))
         self.mask = pygame.mask.from_surface(self.image)
         self.rotation = rotation

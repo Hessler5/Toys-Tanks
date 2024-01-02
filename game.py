@@ -11,6 +11,7 @@ class Game:
     enemy_count= 0 
     #total player lives counter
     lives = 3
+    #tells main loop to respwan player
     respawn = True
 
     def __init__(self, screen) -> None:
@@ -19,6 +20,7 @@ class Game:
         self.barrier_group = pygame.sprite.Group()
         self.tank_group = pygame.sprite.Group()
         self.text = Text(screen)
+        self.time_since_reset = -15000
 
 
     #creates initial barrier group to avoid a memory leak
@@ -38,6 +40,7 @@ class Game:
                     self.tank_group.add(new_enemy)
                     Game.enemy_count += 1
 
+    #handles initial and all subsequent player spawns 
     def spawn_player(self, red_tank):
         if Game.respawn == True and not Game.lives == 0:
             main_player = Tank(red_tank, self.player_x, self.player_y)
@@ -100,6 +103,35 @@ class Game:
         #draws barriers on screen
         for barrier in self.barrier_group: 
             self.screen.blit(barrier.image, (barrier.x, barrier.y))
+
+        #draws Health UI
+        health = pygame.Rect(0, 0, 200, 50)
+        pygame.draw.rect(self.screen, (220, 220, 220), health)
+        pygame.draw.rect(self.screen, (0, 0, 0), health, 2)
+        self.text.draw_UI_text("LIVES",(0, 0, 0), health)
+        for life in range(self.lives):
+            life = pygame.Rect(health.width - 40 - (35 * life), health.center[1] - 25//2, 25, 25)
+            pygame.draw.rect(self.screen, (255, 0, 0), life)
+
+        #handles reset button
+        reset = pygame.Rect(self.screen.get_width() - 150, 0, 150, 50)
+        pygame.draw.rect(self.screen, (220, 220, 220), reset)
+        if pygame.time.get_ticks() - self.time_since_reset <= 15000 and self.time_since_reset > 0:
+            loading = pygame.Rect(self.screen.get_width() - 150, 0, (pygame.time.get_ticks() - self.time_since_reset)//100, 50)
+            pygame.draw.rect(self.screen, (169, 169, 169), loading)
+        pygame.draw.rect(self.screen, (0, 0, 0), reset, 2)
+        self.text.draw_UI_text_centered("RESET", (0, 0, 0), reset)
+        pos = pygame.mouse.get_pos()
+        if reset.collidepoint(pos):
+            if pygame.time.get_ticks() - self.time_since_reset >= 15000:
+                if pygame.mouse.get_pressed()[0]:
+                    self.time_since_reset = pygame.time.get_ticks()
+                    self.player.source_rect.x = self.player_x
+                    self.player.source_rect.y = self.player_y
+                    self.player.rect.x = self.player_x
+                    self.player.rect.y = self.player_y
+                    self.player.rotation = 0
+                    self.player.rotate_tank(0, self.barrier_group)
 
         # for tank in self.tank_group:
         #     if isinstance(tank, Enemy):
