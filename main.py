@@ -2,6 +2,7 @@ import pygame, sys
 import json
 from game import Game
 from text import Text
+from tank import Tank
 
 pygame.init()
 
@@ -11,14 +12,10 @@ SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Toy Tanks")
 FPS = 60
 
-#import tank images
-RED_TANK = pygame.image.load("assets/Red_Tank_Sprite.png").convert_alpha()
-BLUE_TANK = pygame.image.load("assets/Blue_Tank_Sprite.png").convert_alpha()
-
 def main():
     text = Text(SCREEN)
     START_SCREEN = True
-    TOTAL_LEVELS = 2
+    TOTAL_LEVELS = 5
 
     #sets frame rate
     clock = pygame.time.Clock()
@@ -54,7 +51,7 @@ def main():
 
             #Create main gameda
             game = Game(SCREEN)
-            game.create_map(world_data, BLUE_TANK)
+            game.create_map(world_data)
             
             while game.run:
                 clock.tick(FPS)
@@ -63,9 +60,9 @@ def main():
                     pygame.quit()
                     sys.exit()
 
-                game.spawn_player(RED_TANK)
+                game.spawn_player()
                 game.handle_events()
-                game.draw_window()
+                game.draw_window(level)
 
             #death screen
                 if Game.lives == 0:
@@ -85,6 +82,7 @@ def main():
                                 Game.lives = 3
                                 death_screen = False
                                 Game.enemy_count = 0
+                                Tank.total_missel_group.empty()
                                 return "Done"
                         for event in pygame.event.get():
                             if event.type == pygame.QUIT:
@@ -106,8 +104,10 @@ def main():
                     pygame.display.update()
                     if RESTART_BUTTON.collidepoint(pos):
                         if pygame.mouse.get_pressed()[0]:
+                            Game.lives = 3
                             end_screen = False
                             running = True
+                            Tank.total_missel_group.empty()
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             pygame.quit()

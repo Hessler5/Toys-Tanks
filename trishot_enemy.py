@@ -1,11 +1,11 @@
 import pygame
 from tank import Tank
 
-class Enemy(Tank):
+class Trishot(Tank):
     def __init__(self, x, y, combat_x, combat_y) -> None:
         Tank.__init__(self, x, y)
-        self.source_img = pygame.transform.rotate(pygame.transform.scale(pygame.image.load("assets/Blue_Tank_Sprite.png").convert_alpha(), (40, 70)),180)
-        self.image = pygame.transform.rotate(pygame.transform.scale(pygame.image.load("assets/Blue_Tank_Sprite.png").convert_alpha(), (40, 70)),180)
+        self.source_img = pygame.transform.rotate(pygame.transform.scale(pygame.image.load("assets/Orange_Tank_Sprite.png").convert_alpha(), (40, 70)),180)
+        self.image = pygame.transform.rotate(pygame.transform.scale(pygame.image.load("assets/Orange_Tank_Sprite.png").convert_alpha(), (40, 70)),180)
         self.source_rect = self.source_img.get_rect(x = self.x, y = self.y)
         self.rect = self.image.get_rect(x = self.x, y = self.y)
         self.rotation = 0
@@ -24,8 +24,11 @@ class Enemy(Tank):
             self.image = pygame.transform.rotate(self.source_img, self.rotation + 180)
             self.rect = self.image.get_rect()
             self.rect.center = self.source_rect.center
-            if pygame.time.get_ticks() - self.time_since_last_shot > 1000:
+            if pygame.time.get_ticks() - self.time_since_last_shot > 2000:
                 self.time_since_last_shot = pygame.time.get_ticks()
-                super().tank_shoot()
-
-
+                super().tank_shoot(6)
+                self.rotation += 15
+                super().tank_shoot(6)
+                self.rotation -= 30
+                super().tank_shoot(6)
+                self.rotation += 15

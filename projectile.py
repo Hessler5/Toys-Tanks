@@ -1,6 +1,6 @@
 import pygame
 
-class Missel(pygame.sprite.Sprite):
+class Projectile(pygame.sprite.Sprite):
     def __init__(self, x, y, rotation) -> None:
         pygame.sprite.Sprite.__init__(self)
         self.x = x
@@ -31,7 +31,7 @@ class Missel(pygame.sprite.Sprite):
         if pygame.time.get_ticks() - self.time_of_creation > 5000:
             self.kill()
         #cleans projectile if reflections = 8   
-        if self.reflections == 8:
+        if self.reflections == 6:
             self.kill()
 
         

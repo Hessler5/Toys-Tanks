@@ -1,13 +1,13 @@
 import pygame
-from missel import Missel
+from projectile import Projectile
 
 class Tank(pygame.sprite.Sprite):
     #list of all active bullets on the map
     total_missel_group = pygame.sprite.Group()
-    def __init__(self, img, x, y,) -> None:
+    def __init__(self, x, y,) -> None:
         pygame.sprite.Sprite.__init__(self)
-        self.source_img = pygame.transform.scale(img, (40, 70))
-        self.image = pygame.transform.scale(img, (40, 70))
+        self.source_img = pygame.transform.scale(pygame.image.load("assets/Red_Tank_Sprite.png").convert_alpha(), (40, 70))
+        self.image = pygame.transform.scale(pygame.image.load("assets/Red_Tank_Sprite.png").convert_alpha(), (40, 70))
         self.x = x
         self.y = y
         self.source_rect = self.source_img.get_rect(x = self.x, y = self.y)
@@ -47,9 +47,9 @@ class Tank(pygame.sprite.Sprite):
             self.rect.center -= x_vector 
  
     #handles shooting for tanks
-    def tank_shoot(self):
-        if len(self.missel_group) < 4:
-            new_projectile = Missel(self.source_rect.center[0], self.source_rect.center[1], self.rotation)
+    def tank_shoot(self, shotlimit = 4):
+        if len(self.missel_group) < shotlimit:
+            new_projectile = Projectile(self.source_rect.center[0], self.source_rect.center[1], self.rotation)
             self.missel_group.add(new_projectile)
             Tank.total_missel_group.add(new_projectile)
 
@@ -57,12 +57,14 @@ class Tank(pygame.sprite.Sprite):
     def tank_hit(self):
         from game import Game
         from enemy import Enemy
+        from trishot_enemy import Trishot
+        from seeker_enemy import Seeker
         for missel in Tank.total_missel_group:
-            if pygame.time.get_ticks() - missel.time_of_creation > 150:
+            if pygame.time.get_ticks() - missel.time_of_creation > 200:
                 if self.rect.colliderect(missel.rect):
                     self.kill()
                     missel.kill()
-                    if isinstance(self, Enemy):
+                    if isinstance(self, Enemy) or isinstance(self, Trishot) or isinstance(self, Seeker):
                         Game.enemy_count -= 1
                     else:
                         Game.lives -= 1
