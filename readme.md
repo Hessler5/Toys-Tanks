@@ -2,6 +2,9 @@
 
 Toy Tanks was a game created by myself as my phase 3 project at the Flatiron School. The inspriartion came from the Wii Play Tanks game I used to play as a kid. Please read the instructions blow and have fun playing!
 
+Here is a blog post where I discuss the tank movementin detail.
+https://dev.to/hessler5/tank-movement-in-pygame-l6h
+
 ### To Run
 1. Make sure you have a working Python enviornment (Python 3.11.5)
 2. Download GitHub repository
