@@ -7,7 +7,7 @@ class Tank(pygame.sprite.Sprite):
     def __init__(self, x, y,) -> None:
         pygame.sprite.Sprite.__init__(self)
         self.source_img = pygame.transform.scale(pygame.image.load("assets/Red_Tank_Sprite.png").convert_alpha(), (40, 70))
-        self.image = pygame.transform.scale(pygame.image.load("assets/Red_Tank_Sprite.png").convert_alpha(), (40, 70))
+        self.image = self.source_img
         self.x = x
         self.y = y
         self.source_rect = self.source_img.get_rect(x = self.x, y = self.y)
@@ -54,17 +54,14 @@ class Tank(pygame.sprite.Sprite):
             Tank.total_missel_group.add(new_projectile)
 
     #handles collision with bullets
-    def tank_hit(self):
+    def tank_hit(self, player):
         from game import Game
-        from enemy import Enemy
-        from trishot_enemy import Trishot
-        from seeker_enemy import Seeker
         for missel in Tank.total_missel_group:
             if pygame.time.get_ticks() - missel.time_of_creation > 200:
                 if self.rect.colliderect(missel.rect):
                     self.kill()
                     missel.kill()
-                    if isinstance(self, Enemy) or isinstance(self, Trishot) or isinstance(self, Seeker):
+                    if not self == player:
                         Game.enemy_count -= 1
                     else:
                         Game.lives -= 1

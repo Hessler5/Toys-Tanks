@@ -1,8 +1,7 @@
-import pygame, sys
-import json
+import pygame, sys, json
 from game import Game
 from text import Text
-from tank import Tank
+from scenes import Scenes
 
 pygame.init()
 
@@ -11,37 +10,21 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 800
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Toy Tanks")
 FPS = 60
+TOTAL_LEVELS = 2
+text = Text(SCREEN)
 
 def main():
-    text = Text(SCREEN)
-    START_SCREEN = True
-    TOTAL_LEVELS = 5
 
     #sets frame rate
     clock = pygame.time.Clock()
     clock.tick(FPS)
+    scenes = Scenes(SCREEN)
 
     #start screen
-    while START_SCREEN:
-        pos = pygame.mouse.get_pos()
-        SCREEN.fill((220, 220, 220))
-        TITLE = pygame.Rect(SCREEN.get_width()//2 - 300, 100, 600, 200)
-        START_BUTTON = pygame.Rect(SCREEN.get_width()//2 - 150, SCREEN.get_height()//2 - 50, 300, 100)
-        pygame.draw.rect(SCREEN, (114,114,114), START_BUTTON)
-        text.draw_text_title("Toy Tanks", (0,0,0), TITLE)
-        text.draw_text("START", (0,0,0), START_BUTTON)
-        pygame.display.update()
-        if START_BUTTON.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0]:
-                START_SCREEN = False
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+    scenes.start_screen()
 
     #main level loop
-    running = True
-    while running == True:
+    while True:
         for level in range(1, TOTAL_LEVELS + 1):    
             Game.respawn = True
 
@@ -65,57 +48,11 @@ def main():
                 game.draw_window(level)
 
             #death screen
-                if Game.lives == 0:
-                    running = False
-                    death_screen = True
-                    while death_screen  == True:
-                        pos = pygame.mouse.get_pos()
-                        SCREEN.fill((220, 220, 220))
-                        TITLE = pygame.Rect(SCREEN.get_width()//2 - 300, 100, 600, 200)
-                        RESTART_BUTTON = pygame.Rect(SCREEN.get_width()//2 - 150, SCREEN.get_height()//2 + 100, 300, 100)
-                        pygame.draw.rect(SCREEN, (114,114,114), RESTART_BUTTON)
-                        text.draw_text_title("DEAD", (0,0,0), TITLE)
-                        text.draw_text("RESTART", (0,0,0), RESTART_BUTTON)
-                        pygame.display.update()
-                        if RESTART_BUTTON.collidepoint(pos):
-                            if pygame.mouse.get_pressed()[0]:
-                                Game.lives = 3
-                                death_screen = False
-                                Game.enemy_count = 0
-                                Tank.total_missel_group.empty()
-                                return "Done"
-                        for event in pygame.event.get():
-                            if event.type == pygame.QUIT:
-                                pygame.quit()
-                                sys.exit()
+                if scenes.reset_screen() == True:
+                    return "Done"
 
         #end screen
-            if level == TOTAL_LEVELS:
-                running = False
-                end_screen = True
-                while end_screen  == True:
-                    pos = pygame.mouse.get_pos()
-                    SCREEN.fill((220, 220, 220))
-                    TITLE = pygame.Rect(SCREEN.get_width()//2 - 300, 100, 600, 200)
-                    RESTART_BUTTON = pygame.Rect(SCREEN.get_width()//2 - 150, SCREEN.get_height()//2 - 50, 300, 100)
-                    pygame.draw.rect(SCREEN, (114,114,114), RESTART_BUTTON)
-                    text.draw_text_title("WINNER!", (0,0,0), TITLE)
-                    text.draw_text("RESTART", (0,0,0), RESTART_BUTTON)
-                    pygame.display.update()
-                    if RESTART_BUTTON.collidepoint(pos):
-                        if pygame.mouse.get_pressed()[0]:
-                            Game.lives = 3
-                            end_screen = False
-                            running = True
-                            Tank.total_missel_group.empty()
-                    for event in pygame.event.get():
-                        if event.type == pygame.QUIT:
-                            pygame.quit()
-                            sys.exit()
-
-
-    pygame.quit()
-    sys.exit()
+            scenes.end_screen(level, TOTAL_LEVELS)
 
 #main function placed in a loop to facilitate restarting 
 def run_game():

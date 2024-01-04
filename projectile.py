@@ -3,8 +3,6 @@ import pygame
 class Projectile(pygame.sprite.Sprite):
     def __init__(self, x, y, rotation) -> None:
         pygame.sprite.Sprite.__init__(self)
-        self.x = x
-        self.y = y
         self.image = pygame.transform.scale(pygame.image.load("assets/projectile.png").convert_alpha(), (18,18))
         self.rect = self.image.get_rect(center=(x, y))
         self.mask = pygame.mask.from_surface(self.image)

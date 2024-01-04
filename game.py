@@ -34,30 +34,23 @@ class Game:
                     self.player_y = row * 100
                 if world_data[row][column] == 1:
                     new_barrier = Barrier(column * 100, row * 100)
-                    self.screen.blit(new_barrier.image, (column * 100, row * 100))
                     self.barrier_group.add(new_barrier)
                 if isinstance(world_data[row][column], list):
+                    Game.enemy_count += 1
                     if world_data[row][column][0] == 1:
                         new_enemy = Enemy(column * 100 + 20, row * 100 + 20, world_data[row][column][1], world_data[row][column][2])
-                        self.screen.blit(new_enemy.image, (column * 100 + 20, row * 100 + 20))
                         self.tank_group.add(new_enemy)
-                        Game.enemy_count += 1
                     if world_data[row][column][0] == 2:
                         new_enemy = Trishot(column * 100 + 20, row * 100 + 20, world_data[row][column][1], world_data[row][column][2])
-                        self.screen.blit(new_enemy.image, (column * 100 + 20, row * 100 + 20))
                         self.tank_group.add(new_enemy)
-                        Game.enemy_count += 1
                     if world_data[row][column][0] == 3:
                         new_enemy = Seeker(column * 100 + 20, row * 100 + 20, world_data[row][column][1], world_data[row][column][2])
-                        self.screen.blit(new_enemy.image, (column * 100 + 20, row * 100 + 20))
                         self.tank_group.add(new_enemy)
-                        Game.enemy_count += 1
 
     #handles initial and all subsequent player spawns 
     def spawn_player(self):
         if Game.respawn == True and not Game.lives == 0:
             main_player = Tank(self.player_x, self.player_y)
-            self.screen.blit(main_player.image, (self.player_x, self.player_y))
             self.player = main_player
             self.tank_group.add(main_player)
             Game.respawn = False
@@ -86,6 +79,7 @@ class Game:
         for missel in Tank.total_missel_group:
             missel.move_missel(self.barrier_group)
 
+    #moves seeker missels
         for tank in self.tank_group:
             if isinstance(tank, Seeker):
                 for seeker in tank.seeker_group:
@@ -93,12 +87,12 @@ class Game:
 
     #checks for any tank collisions with missels
         for tank in self.tank_group:
-            tank.tank_hit()
+            tank.tank_hit(self.player)
 
 
     #checks for each enemy to shoot
         for tank in self.tank_group:
-            if isinstance(tank, Enemy) or isinstance(tank, Trishot) or isinstance(tank, Seeker):
+            if not tank == self.player:
                 tank.tank_shoot(self.player)
 
     #drawing function
@@ -114,13 +108,13 @@ class Game:
                 Tank.total_missel_group.empty()
                 self.run = False
 
-        #draws tanks on screen
-        for tank in self.tank_group: 
-            self.screen.blit(tank.image, tank.rect)
-    
         #draws barriers on screen
         for barrier in self.barrier_group: 
             self.screen.blit(barrier.image, (barrier.x, barrier.y))
+
+        #draws tanks on screen
+        for tank in self.tank_group: 
+            self.screen.blit(tank.image, tank.rect)
 
         #draws Health UI
         health = pygame.Rect(0, 0, 200, 50)
@@ -154,8 +148,7 @@ class Game:
                     self.player.source_rect.y = self.player_y
                     self.player.rect.x = self.player_x
                     self.player.rect.y = self.player_y
-                    self.player.rotation = 0
-                    self.player.rotate_tank(0, self.barrier_group)
+                    self.player.rotate_tank(-self.player.rotation, self.barrier_group)
 
         # for tank in self.tank_group:
         #     if isinstance(tank, Enemy):

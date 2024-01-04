@@ -5,7 +5,7 @@ class Enemy(Tank):
     def __init__(self, x, y, combat_x, combat_y) -> None:
         Tank.__init__(self, x, y)
         self.source_img = pygame.transform.rotate(pygame.transform.scale(pygame.image.load("assets/Blue_Tank_Sprite.png").convert_alpha(), (40, 70)),180)
-        self.image = pygame.transform.rotate(pygame.transform.scale(pygame.image.load("assets/Blue_Tank_Sprite.png").convert_alpha(), (40, 70)),180)
+        self.image = self.source_img
         self.source_rect = self.source_img.get_rect(x = self.x, y = self.y)
         self.rect = self.image.get_rect(x = self.x, y = self.y)
         self.rotation = 0

@@ -1,6 +1,6 @@
 import pygame
 from tank import Tank
-from seeker_projectile import Seeker_Projectile
+from projectile import Projectile
 
 class Seeker(Tank):
     def __init__(self, x, y, combat_x, combat_y) -> None:
@@ -19,7 +19,7 @@ class Seeker(Tank):
     def tank_shoot(self, player):
         if len(self.seeker_group) < 10 and pygame.time.get_ticks() - self.time_since_last_seeker > 50:
             self.seeker_rotation += 35
-            new_seeker = Seeker_Projectile(self.source_rect.center[0], self.source_rect.center[1], self.seeker_rotation)
+            new_seeker = Projectile(self.source_rect.center[0], self.source_rect.center[1], self.seeker_rotation)
             self.seeker_group.add(new_seeker)
 
         for seeker in self.seeker_group:
@@ -29,7 +29,7 @@ class Seeker(Tank):
             #shoots new bullet if seeker hits tank
             elif player.rect.colliderect(seeker.rect):
                 #calculates ahgle for shot
-                self.rotation = seeker.initial_rotation
+                self.rotation = seeker.rotation
                 #rotates tank toward shot
                 self.image = pygame.transform.rotate(self.source_img, self.rotation + 180)
                 self.rect = self.image.get_rect()
