@@ -1,5 +1,5 @@
 import pygame
-from scr.projectile import Projectile
+from projectile import Projectile
 
 class Tank(pygame.sprite.Sprite):
     #list of all active bullets on the map
@@ -55,7 +55,7 @@ class Tank(pygame.sprite.Sprite):
 
     #handles collision with bullets
     def tank_hit(self, player):
-        from scr.game import Game
+        from game import Game
         for missel in Tank.total_missel_group:
             if pygame.time.get_ticks() - missel.time_of_creation > 200:
                 if self.rect.colliderect(missel.rect):

@@ -1,7 +1,7 @@
 import pygame, sys, json
-from scr.game import Game
-from scr.text import Text
-from scr.scenes import Scenes
+from game import Game
+from text import Text
+from scenes import Scenes
 
 pygame.init()
 
@@ -10,7 +10,7 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 800
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Toy Tanks")
 FPS = 60
-TOTAL_LEVELS = 2
+TOTAL_LEVELS = 5
 text = Text(SCREEN)
 
 def main():

@@ -1,10 +1,10 @@
 import pygame
-from scr.barrier import Barrier
-from scr.tank import Tank
-from scr.enemy import Enemy
-from scr.text import Text
-from scr.trishot_enemy import Trishot
-from scr.seeker_enemy import Seeker
+from barrier import Barrier
+from tank import Tank
+from enemy import Enemy
+from text import Text
+from trishot_enemy import Trishot
+from seeker_enemy import Seeker
 
 class Game:
     #varriable to make quit button accessable by main file

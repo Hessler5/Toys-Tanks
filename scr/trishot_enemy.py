@@ -1,5 +1,5 @@
 import pygame
-from scr.tank import Tank
+from tank import Tank
 
 class Trishot(Tank):
     def __init__(self, x, y, combat_x, combat_y) -> None:
