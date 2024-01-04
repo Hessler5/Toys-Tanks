@@ -30,7 +30,6 @@ class Scenes():
             pygame.display.update()
             if START_BUTTON.collidepoint(pos):
                 if pygame.mouse.get_pressed()[0]:
-                    print("hi")
                     break
             self.quit_pygame()
 

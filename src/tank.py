@@ -6,7 +6,7 @@ class Tank(pygame.sprite.Sprite):
     total_missel_group = pygame.sprite.Group()
     def __init__(self, x, y,) -> None:
         pygame.sprite.Sprite.__init__(self)
-        self.source_img = pygame.transform.scale(pygame.image.load("assets/Red_Tank_Sprite.png").convert_alpha(), (40, 70))
+        self.source_img = pygame.transform.scale(pygame.image.load("src/assets/Red_Tank_Sprite.png").convert_alpha(), (40, 70))
         self.image = self.source_img
         self.x = x
         self.y = y

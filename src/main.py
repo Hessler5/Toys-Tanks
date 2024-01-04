@@ -23,13 +23,13 @@ def main():
     #start screen
     scenes.start_screen()
 
-    #main level loop
+    #main level loopw
     while True:
         for level in range(1, TOTAL_LEVELS + 1):    
             Game.respawn = True
 
             #loads world data
-            level_file = open(f'levels/level{level}_data.json', 'r')
+            level_file = open(f'src/levels/level{level}_data.json', 'r')
             world_data = json.load(level_file)
 
             #Create main gameda
