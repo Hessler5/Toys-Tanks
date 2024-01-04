@@ -8,7 +8,8 @@ https://dev.to/hessler5/tank-movement-in-pygame-l6h
 ### To Run
 1. Make sure you have a working Python enviornment (Python 3.11.5)
 2. Download GitHub repository
-3. Run src/main.py 
+3. Opemn file and run "pip install pygame"
+4. Run src/main.py 
 
 ### To Play
 The objective of the game is to destroy all of the enemy tanks and touch the green finish marker to make it to the next level. There are a total of 5 levels each with increasing difficulty.
