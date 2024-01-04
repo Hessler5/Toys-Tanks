@@ -1,4 +1,4 @@
-#------------Toy Tanks!!!!!------------
+#Toy Tanks!!!!!
 
 Toy Tanks was a game created by myself as my phase 3 project at the Flatiron School. The inspriartion came from the Wii Play Tanks game I used to play as a kid. Please read the instructions blow and have fun playing!
 
