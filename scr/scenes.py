@@ -1,7 +1,7 @@
 import pygame, sys
-from text import Text
-from game import Game
-from tank import Tank
+from scr.text import Text
+from scr.game import Game
+from scr.tank import Tank
 
 class Scenes():
     def __init__(self, screen):

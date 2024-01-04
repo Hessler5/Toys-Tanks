@@ -1,7 +1,7 @@
 import pygame, sys, json
-from game import Game
-from text import Text
-from scenes import Scenes
+from scr.game import Game
+from scr.text import Text
+from scr.scenes import Scenes
 
 pygame.init()
 

@@ -1,6 +1,6 @@
 import pygame
-from tank import Tank
-from projectile import Projectile
+from scr.tank import Tank
+from scr.projectile import Projectile
 
 class Seeker(Tank):
     def __init__(self, x, y, combat_x, combat_y) -> None:
