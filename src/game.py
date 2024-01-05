@@ -5,6 +5,7 @@ from enemy import Enemy
 from text import Text
 from trishot_enemy import Trishot
 from seeker_enemy import Seeker
+from health_pickup import Health
 
 class Game:
     #varriable to make quit button accessable by main file
@@ -21,6 +22,7 @@ class Game:
         self.run = True
         self.barrier_group = pygame.sprite.Group()
         self.tank_group = pygame.sprite.Group()
+        self.health_group = []
         self.text = Text(screen)
         self.time_since_reset = -15000
 
@@ -35,6 +37,10 @@ class Game:
                 if world_data[row][column] == 1:
                     new_barrier = Barrier(column * 100, row * 100)
                     self.barrier_group.add(new_barrier)
+                if world_data[row][column] == 3:
+                    new_health = Health(column * 100, row * 100)
+                    self.health_group.append(new_health)
+
                 if isinstance(world_data[row][column], list):
                     Game.enemy_count += 1
                     if world_data[row][column][0] == 1:
@@ -86,6 +92,13 @@ class Game:
                 for seeker in tank.seeker_group:
                     seeker.move_missel(self.barrier_group)
 
+        for health in self.health_group:
+            if Game.lives < 3:  
+                if health.rect.colliderect(self.player.rect):
+                    self.health_group.remove(health)
+                    Game.lives += 1
+
+
     #checks for any tank collisions with missels
         for tank in self.tank_group:
             tank.tank_hit(self.player)
@@ -99,6 +112,9 @@ class Game:
     #drawing function
     def draw_window(self, level):
         self.screen.fill((220, 220, 220))
+
+        for health in self.health_group:
+            pygame.draw.rect(self.screen, (255, 0, 0), health.rect)
 
         #draws finish square for player after all enemies are dead
         if self.enemy_count == 0:
