@@ -48,11 +48,12 @@ def main():
                 game.draw_window(level)
 
             #death screen
-                if scenes.reset_screen() == True:
+                if scenes.reset_screen():
                     return "Done"
 
         #end screen
-            scenes.end_screen(level, TOTAL_LEVELS)
+            if scenes.end_screen(level, TOTAL_LEVELS):
+                return "Done"
 
 #main function placed in a loop to facilitate restarting 
 def run_game():

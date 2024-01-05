@@ -17,7 +17,7 @@ class Seeker(Tank):
         self.time_since_last_seeker = -50
 
     def tank_shoot(self, player):
-        if len(self.seeker_group) < 10 and pygame.time.get_ticks() - self.time_since_last_seeker > 50:
+        if len(self.seeker_group) < 5 and pygame.time.get_ticks() - self.time_since_last_seeker > 50:
             self.seeker_rotation += 50
             new_seeker = Projectile(self.source_rect.center[0], self.source_rect.center[1], self.seeker_rotation)
             self.seeker_group.add(new_seeker)

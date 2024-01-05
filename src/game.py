@@ -54,6 +54,7 @@ class Game:
             self.player = main_player
             self.tank_group.add(main_player)
             Game.respawn = False
+            Tank.total_missel_group.empty()
 
     #handles key pushes
     def handle_events(self):

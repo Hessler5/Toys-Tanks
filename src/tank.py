@@ -13,7 +13,7 @@ class Tank(pygame.sprite.Sprite):
         self.source_rect = self.source_img.get_rect(x = self.x, y = self.y)
         self.rect = self.image.get_rect(x = self.x, y = self.y)
         self.rotation = 0
-        self.missel_group = pygame.sprite.Group()
+        self.projectile_group = pygame.sprite.Group()
 
     def rotate_tank(self, rotation_value, barrier_group = []):
         self.rotation += rotation_value
@@ -48,22 +48,26 @@ class Tank(pygame.sprite.Sprite):
  
     #handles shooting for tanks
     def tank_shoot(self, shotlimit = 4):
-        if len(self.missel_group) < shotlimit:
+        if len(self.projectile_group) < shotlimit:
             new_projectile = Projectile(self.source_rect.center[0], self.source_rect.center[1], self.rotation)
-            self.missel_group.add(new_projectile)
+            self.projectile_group.add(new_projectile)
             Tank.total_missel_group.add(new_projectile)
 
     #handles collision with bullets
     def tank_hit(self, player):
         from game import Game
+        from scenes import Scenes
         for missel in Tank.total_missel_group:
             if pygame.time.get_ticks() - missel.time_of_creation > 200:
                 if self.rect.colliderect(missel.rect):
-                    self.kill()
-                    missel.kill()
                     if not self == player:
                         Game.enemy_count -= 1
+                        self.kill()
+                        missel.kill()
                     else:
-                        Game.lives -= 1
-                        Game.respawn = True
+                        if Scenes.normal_mode:
+                            Game.lives -= 1
+                            Game.respawn = True
+                            self.kill()
+                            missel.kill()
 
