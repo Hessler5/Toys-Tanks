@@ -2,6 +2,7 @@ import pygame, sys
 from text import Text
 from game import Game
 from tank import Tank
+from enemy import Enemy
 
 class Scenes():
     normal_mode = True
@@ -20,9 +21,34 @@ class Scenes():
                     sys.exit()
 
     def start_screen(self):
+        START_SCREEN_TANK = Tank(self.screen_width//2, self.screen_height//2 + 100)
+        print(START_SCREEN_TANK.rect.center)
+        START_SCREEN_TANK.rotate_tank(-90)
+        TIME_SINCE_LAST_MOVE = 0
         while True:
             pos = pygame.mouse.get_pos()
             self.screen.fill((self.back_ground_color))
+            self.screen.blit(START_SCREEN_TANK.image, START_SCREEN_TANK.rect)
+            if pygame.time.get_ticks() - TIME_SINCE_LAST_MOVE > 4:
+                TIME_SINCE_LAST_MOVE = pygame.time.get_ticks()
+                if START_SCREEN_TANK.rect.center[0] < 1000 and START_SCREEN_TANK.rect.center[1] > 500 and START_SCREEN_TANK.rotation == -90:
+                    START_SCREEN_TANK.move_tank(-1, [])
+                elif START_SCREEN_TANK.rect.center[0] == 1000 and -90 <= START_SCREEN_TANK.rotation < 0:
+                    START_SCREEN_TANK.rotate_tank(1)
+                elif 535 > START_SCREEN_TANK.rect.center[1] > 100:
+                    START_SCREEN_TANK.move_tank(-1, [])
+                elif START_SCREEN_TANK.rect.center[1] == 100 and 0 <= START_SCREEN_TANK.rotation < 90:
+                    START_SCREEN_TANK.rotate_tank(1)
+                elif START_SCREEN_TANK.rect.center[0] > 200:
+                    START_SCREEN_TANK.move_tank(-1, [])
+                elif START_SCREEN_TANK.rect.center[0] == 200 and 90 <= START_SCREEN_TANK.rotation < 180:
+                    START_SCREEN_TANK.rotate_tank(1)
+                elif START_SCREEN_TANK.rect.center[1] < 535:
+                    START_SCREEN_TANK.move_tank(-1, [])
+                elif START_SCREEN_TANK.rect.center[0] == 200 and 180 <= START_SCREEN_TANK.rotation < 270:
+                    START_SCREEN_TANK.rotate_tank(1) 
+                elif START_SCREEN_TANK.rotation == 270:
+                    START_SCREEN_TANK.rotation = -90
             TITLE = pygame.Rect(self.screen_width//2 - 300, 100, 600, 200)
             START_BUTTON = pygame.Rect(self.screen_width//2 - 150, self.screen_height//2 - 50, 300, 100)
             pygame.draw.rect(self.screen, (114,114,114), START_BUTTON)
