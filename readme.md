@@ -1,3 +1,6 @@
+
+<img width="1196" alt="Screenshot 2024-01-05 at 12 58 23 PM" src="https://github.com/Hessler5/Toys-Tanks/assets/145175986/01b4ecb3-ce18-40a5-b4f9-31a92d42652e">
+
 # Toy Tanks!!!!!
 
 Toy Tanks was a game created by myself as my phase 3 project at the Flatiron School. The inspriartion came from the Wii Play Tanks game I used to play as a kid. Please read the instructions blow and have fun playing!
