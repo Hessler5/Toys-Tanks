@@ -24,3 +24,5 @@ AWSD for movement
 Space for shoot
 
 If your tank gets stuck there is a reset button that will teleport it to the spawn point.
+
+<img width="1197" alt="Screenshot 2024-01-05 at 2 42 43 PM" src="https://github.com/Hessler5/Toys-Tanks/assets/145175986/a024bc60-eeec-4007-a4cf-4cf622cbb0be">
