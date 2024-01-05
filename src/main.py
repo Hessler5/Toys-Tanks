@@ -4,7 +4,7 @@ from text import Text
 from scenes import Scenes
 
 pygame.init()
-
+# 
 #screen setup
 SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 800
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
