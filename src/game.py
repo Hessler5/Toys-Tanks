@@ -5,7 +5,6 @@ from enemy import Enemy
 from text import Text
 from trishot_enemy import Trishot
 from seeker_enemy import Seeker
-from health_pickup import Health
 
 class Game:
     #varriable to make quit button accessable by main file
@@ -38,7 +37,7 @@ class Game:
                     new_barrier = Barrier(column * 100, row * 100)
                     self.barrier_group.add(new_barrier)
                 if world_data[row][column] == 3:
-                    new_health = Health(column * 100, row * 100)
+                    new_health = pygame.Rect(column * 100 + 37, row * 100 + 37, 25, 25)
                     self.health_group.append(new_health)
 
                 if isinstance(world_data[row][column], list):
@@ -94,7 +93,7 @@ class Game:
 
         for health in self.health_group:
             if Game.lives < 3:  
-                if health.rect.colliderect(self.player.rect):
+                if health.colliderect(self.player.rect):
                     self.health_group.remove(health)
                     Game.lives += 1
 
@@ -114,7 +113,7 @@ class Game:
         self.screen.fill((220, 220, 220))
 
         for health in self.health_group:
-            pygame.draw.rect(self.screen, (255, 0, 0), health.rect)
+            pygame.draw.rect(self.screen, (255, 0, 0), health)
 
         #draws finish square for player after all enemies are dead
         if self.enemy_count == 0:
