@@ -11,7 +11,7 @@ https://dev.to/hessler5/tank-movement-in-pygame-l6h
 ### To Run
 1. Make sure you have a working Python enviornment (Python 3.11.5)
 2. Download GitHub repository
-3. Opemn file and run "pip install pygame"
+3. Open file and run "pip install pygame"
 4. Run src/main.py 
 
 ### To Play
